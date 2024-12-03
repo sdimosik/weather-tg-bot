@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(indexes = [Index(name = "idx_telegram_id", columnList = "telegramId")])
+@Table(name = "weather_query", indexes = [Index(name = "idx_telegram_id", columnList = "telegramId")])
 data class WeatherQuery(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

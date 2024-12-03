@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  weather-bot:
+    image: weather-bot:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8181:8181"
+    depends_on:
+      - service-db
+    environment:
+      - SERVER_PORT= 8181
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://service-db/weather_bot_db
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+
+  service-db:
+    image: postgres:14.7-alpine
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: weather_bot_db
+    ports:
+      - "15432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  db-data:
